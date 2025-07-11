@@ -3,13 +3,13 @@
 pragma solidity ^0.8.0;
 
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import {HonkVerifier} from "./Verifier.sol";
+import {IVerifier, HonkVerifier} from "./Verifier.sol";
 
 contract BeerShop is ERC20 {
     address public owner;
     uint256 public beerPrice;
     uint256 public minAge;
-    HonkVerifier public verifier;
+    IVerifier public verifier;
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Not the owner");
@@ -18,7 +18,7 @@ contract BeerShop is ERC20 {
 
     constructor() ERC20("BEER", "BEER") {
         owner = msg.sender;
-        beerPrice = 0.000001 ether;
+        beerPrice = 0.000000000001 ether;
         minAge = 20;
         verifier = new HonkVerifier();
     }
@@ -36,7 +36,8 @@ contract BeerShop is ERC20 {
         pp[6] = commitment[6];
         pp[7] = commitment[7];
         pp[8] = bytes32(uint256(minAge));
-        require(verifier.verify(proof, pp), "Invalid proof");
+        (bool success,) = address(verifier).call(abi.encodeCall(IVerifier.verify, (proof, pp)));
+        require(success, "Invalid proof");
 
         _mint(msg.sender, 1e18);
     }
