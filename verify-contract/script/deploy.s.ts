@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 
-// 0x7995A26E8e335db0032Dc99e220AAa9B4D214A97
+// 0x427c6F7437f5cbF0685f9843A745019556271960
 
 async function main() {
   const factory = await ethers.getContractFactory("BeerShop");

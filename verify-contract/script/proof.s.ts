@@ -2,7 +2,7 @@ import { acvm } from "@noir-lang/noir_js";
 import { generateProof } from "../util/generateProof";
 import { ethers } from "hardhat";
 
-const BEER_SHOP = "0x7995A26E8e335db0032Dc99e220AAa9B4D214A97";
+const BEER_SHOP = "0x427c6F7437f5cbF0685f9843A745019556271960";
 
 const AGE = 21;
 const SHA256_INIT_STATE = [
@@ -12,6 +12,7 @@ const SHA256_INIT_STATE = [
 
 async function main() {
   const beerShop = await ethers.getContractAt("BeerShop", BEER_SHOP);
+  const min_age = Number(await beerShop.minAge());
 
   const preimage = new Uint32Array(16).fill(0);
   preimage[0] = AGE;
@@ -30,7 +31,7 @@ async function main() {
     age: AGE,
     nonce: [...nonceArray],
     commitment: [...commitment],
-    min_age: Number(await beerShop.minAge()),
+    min_age,
   });
   const commitmentPP = publicInputs.slice(0, publicInputs.length - 1);
 
