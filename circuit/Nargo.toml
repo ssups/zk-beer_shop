@@ -1,0 +1,7 @@
+[package]
+name = "beer_shop"
+type = "bin"
+authors = ["ssups"]
+compiler_version = ">=1.0.0"
+
+[dependencies]
